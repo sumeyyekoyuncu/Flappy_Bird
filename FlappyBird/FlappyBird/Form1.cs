@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +15,7 @@ namespace FlappyBird
         int pipeSpeed = 6;
         int gravity = 5;
         int score = 0;
+        bool gameOver=false;
         public Form1()
         {
             InitializeComponent();
@@ -44,7 +45,7 @@ namespace FlappyBird
             if(pipeUp.Left < -80)
             {
                 pipeUp.Left = 500;
-                
+                 
             }
             if(flappyBird.Bounds.IntersectsWith(pipeUp.Bounds) || flappyBird.Bounds.IntersectsWith(pipeBottom.Bounds)
                 || flappyBird.Bounds.IntersectsWith(ground.Bounds) || flappyBird.Top < -25)
@@ -61,7 +62,8 @@ namespace FlappyBird
         private void endGame()
         {
             gameTimer.Stop();
-            scoreText.Text += ("  Game Over !!!");
+            scoreText.Text += ("  Game Over !!! Press R to retry.");
+            gameOver=true;
         }
 
         private void gamekeyisdown(object sender, KeyEventArgs e)
@@ -83,7 +85,23 @@ namespace FlappyBird
                 gravity = 5;
 
             }
+            if(e.KeyCode ==Keys.R && gameOver == true)
+            {
+                RestartGame();
+            }
 
+        }
+
+        private void RestartGame()
+        {
+            gameOver = false;
+            flappyBird.Location = new Point(84,209);
+            pipeUp.Left = 200;
+            pipeBottom.Left = 400;
+            score = 0;
+            pipeSpeed = 6;
+            scoreText.Text = "Score : " + score;
+            gameTimer.Start();
         }
 
         private void ground_Click(object sender, EventArgs e)
